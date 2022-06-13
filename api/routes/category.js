@@ -5,8 +5,20 @@ const router = require('express').Router()
 // GET ALL CATEGORY
 router.get('/', async(req, res) => {
     try {
-        const categories = await Category.find()
-        res.status(200).json(categories)
+            const categories = await Category.find()
+            res.status(200).json(categories)
+
+    } catch(err) {
+        res.status(500).json(err)
+    }
+    
+})
+
+router.get('/:id', async(req, res) => {
+    const id = req.params.id
+    try {
+            const categories = await Category.findById(id)
+            res.status(200).json(categories)
 
     } catch(err) {
         res.status(500).json(err)

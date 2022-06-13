@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Link } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
 
 const CategoriesSummary = () => {
 
@@ -32,7 +33,7 @@ const CategoriesSummary = () => {
                             <ul className='flex items-center w-full bg-white m-2'>
                                 <li className='text-lg basis-3/6 px-2'>{e.cat}</li>
                                 <p className='text-sm basis-1/6 px-2'>{e.type}</p>
-                                <Link className='basis-1/6' to={`/`}><EditIcon className='m-1 sm:m-2'/></Link>
+                                <Link className='basis-1/6' to={`/editcategory/${e._id}`}><EditIcon className='m-1 sm:m-2'/></Link>
                                 <button className='basis-1/6'><DeleteIcon className='m-1 sm:m-2 '/></button>
                                 
                             </ul>
@@ -41,6 +42,7 @@ const CategoriesSummary = () => {
                     </div>
 
                 ))}
+                <Link to={'/newcategory?type=expense'}><p className='bg-white m-2 p-2'><AddIcon/>Add new expense Category</p></Link>
         </div>
 
         <div>
@@ -51,7 +53,7 @@ const CategoriesSummary = () => {
                             <ul className='flex items-center w-full bg-white m-2'>
                                 <li className='text-lg basis-3/6 px-2'>{e.cat}</li>
                                 <p className='text-sm basis-1/6 px-2'>{e.type}</p>
-                                <Link className='basis-1/6' to={`/`}><EditIcon className='m-1 sm:m-2'/></Link>
+                                <Link className='basis-1/6' to={`/editcategory/${e._id}`}><EditIcon className='m-1 sm:m-2'/></Link>
                                 <button className='basis-1/6'><DeleteIcon className='m-1 sm:m-2 '/></button>
                                 
                             </ul>
@@ -60,6 +62,7 @@ const CategoriesSummary = () => {
                     </div>
 
                 ))}
+                <Link to={'/newcategory?type=income'}><p className='bg-white m-2 p-2'><AddIcon/>Add new income Category</p></Link>
         </div>
         
     </div>
