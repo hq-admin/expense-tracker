@@ -29,7 +29,7 @@ console.log({
             const res = axios.post('http://localhost:5000/api/transactions',
             {
                 date: value,
-                title: notes,
+                notes,
                 amount,
                 cat,
                 type

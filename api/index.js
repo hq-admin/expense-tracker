@@ -3,9 +3,8 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 var cors = require('cors')
 
-const expenseRoute = require('./routes/expense')
-const incomeRoute = require('./routes/income')
 const transactionRoute = require('./routes/transactions')
+const categoryRoute = require('./routes/category')
 
 const app = express()
 
@@ -20,8 +19,7 @@ mongoose.connect(process.env.MONGO_URL)
 .then(()=> console.log("DB connection successfull"))
 .catch((err) => console.log(err))
 
-app.use("/api/expenses", expenseRoute)
-app.use("/api/incomes", incomeRoute)
 app.use("/api/transactions", transactionRoute)
+app.use("/api/categories", categoryRoute)
 
 app.listen(5000, ()=> console.log(`Server running successfully`))

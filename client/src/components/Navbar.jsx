@@ -7,10 +7,11 @@ import AddIcon from '@mui/icons-material/Add';
 const Navbar = () => {
   return (
     <div>
-        <nav className='flex container my-8 justify-center'>
-            <Link to={'/'} className='px-4 mx-2 text-2xl text-green rounded-lg'><AccountBalanceWalletIcon/> Transactions</Link>
-            <Link to={'/newexpense'} className='px-4 mx-2 text-l bg-green text-xl text-white rounded-lg'><AddIcon className='self-center'/> ADD NEW TRANSACTION</Link>
-            <Link to={'/login'} className='px-4 mx-2 text-2xl text-green rounded-lg'><LoginIcon/> Login</Link>
+        <nav className='flex flex-col md:flex-row container my-8 justify-center'>
+            <Link to={'/'} className='px-4 mx-2 text-xl text-green rounded-lg'><AccountBalanceWalletIcon/> Transactions</Link>
+            <Link to={'/categories'} className='px-4 mx-2 text-xl text-green rounded-lg'><AccountBalanceWalletIcon/> Categories</Link>
+            <Link to={'/login'} className='px-4 mx-2 text-xl text-green rounded-lg'><LoginIcon/> Login</Link>
+            <Link to={'/newtransaction'} className='px-4 mx-2 text-l bg-green text-white rounded-lg'><AddIcon className='self-center'/> ADD NEW TRANSACTION</Link>
         </nav>
     </div>
   )

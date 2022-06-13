@@ -12,7 +12,11 @@ const TransactionsSummary = () => {
   const fullMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
   const [data, setData] = useState([])
+  const [summary, setSummary] = useState({})
   const [monthyear, setMonthYear] = useState({month, year})
+
+console.log(data)
+console.log(summary)
 
   const handleDelete = (id) => {
     
@@ -28,11 +32,29 @@ const TransactionsSummary = () => {
 
 
   useEffect(()=> {
-    const getTransactions = async() => {
+    const getTransactions = async() => {  
+      let totalExpense = 0;
+      let totalIncome = 0;
+      let difference = totalIncome - totalExpense;
       try {
         const res = await axios.get(`http://localhost:5000/api/transactions?month=${monthyear.month}&year=${monthyear.year}`)
         setData(res.data)
-        console.log(res.data)
+        //console.log(res.data)
+
+        res.data.map((d)=> {
+          if(d.type === "expense") {
+            totalExpense = totalExpense + d.amount;
+          } else {
+            totalIncome = totalIncome + d.amount
+          }
+        })
+        difference = totalIncome - totalExpense;
+        setSummary({
+          totalExpense,
+          totalIncome,
+          difference
+        })
+
       } catch(err) {
         console.log(err)
       }
@@ -42,9 +64,26 @@ const TransactionsSummary = () => {
   }, [monthyear])
 
   return (
-    <div className='mx-16 w-11/12 sm:w-3/5 my-0 flex flex-col items-center bg-white '>
-        
-        <div>
+    <div className='mx-16 w-11/12 lg:w-2/5 my-0 flex flex-col items-center  '>
+
+      <div className='w-1/2 bg-white m-2 p-2'>
+        <div className='flex'>
+          <p className='basis-2/3'>Total Income: </p>
+          <p className='basis-1/3'>{summary.totalIncome}</p>
+        </div>
+        <div className='flex'>
+          <p className='basis-2/3'>Total Expense: </p>
+          <p className='basis-1/3'>{summary.totalExpense}</p>
+        </div>
+        <hr className='w-full h-1'/>
+        <div className='flex'>
+          <p className='basis-2/3'>Balance: </p>
+          <p className='basis-1/3'>{summary.difference}</p>
+        </div>
+      </div>
+
+      <div className='flex flex-col items-center bg-white w-full'>
+        <div >
           <label className='text-md font-bold'>Month: </label>
           <select value={monthyear.month} onChange={(e)=> setMonthYear({...monthyear, month: e.target.value})}>
             <option value='1'>Jan</option>
@@ -79,19 +118,20 @@ const TransactionsSummary = () => {
                 </div>
                 <div className='basis-2/5 m-2'>
                     <p className='text-lg font-bold'>{e.cat}</p>
-                    <p>{e.title}</p>
+                    <p>{e.notes}</p>
                 </div>
                 <div className='basis-1/5 self-center'>$ {e.amount}</div>
                 <div className='basis-1/5 self-center'>
-                  <Link to={`/editexpense/${e._id}`}><EditIcon className='m-1 sm:m-2'/></Link>
+                  <Link to={`/edittransaction/${e._id}`}><EditIcon className='m-1 sm:m-2'/></Link>
                   <button onClick={()=>handleDelete(e._id)}><DeleteIcon className='m-1 sm:m-2'/></button>
                 </div>
-                    
+                
             </div>
             
         ))}
+        
     </div>
-    
+    </div>
   )
   
 }
