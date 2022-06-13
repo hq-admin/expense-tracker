@@ -5,21 +5,25 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-const EditExpense = () => {
+const EditTransaction = () => {
     const location = useLocation()
     const id = location.pathname.split('/')[2]
     const navigate = useNavigate()
     const [data, setData] = useState({})
     const [value, setValue] = useState(new Date());
+    const [type, setType] = useState("expense")
+    const [amount, setAmount] = useState()
+
     const handleAdd = (e) => {
         e.preventDefault()
         try {
-            const res = axios.put(`http://localhost:5000/api/expenses/${id}`,
+            const res = axios.put(`http://localhost:5000/api/transactions/${id}`,
             {
-                title: data.title,
+                notes: data.notes,
                 amount: data.amount,
                 cat: data.cat,
-                date: data.date
+                date: data.date,
+                type: data.type
             })
             console.log(res.data)
             
@@ -35,9 +39,9 @@ const EditExpense = () => {
     }
 
     useEffect(()=> {
-        const getExpenseData = async() => {
+        const getTransactionData = async() => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/expenses?id=${id}`)
+                const res = await axios.get(`http://localhost:5000/api/transactions?id=${id}`)
                 setData(res.data)
                 
             } catch(err) {
@@ -45,11 +49,30 @@ const EditExpense = () => {
             }
             
         }
-        getExpenseData()
+        getTransactionData()
     },[])
+
+    const changeType = (type) => {
+        if(type === "income") {
+            setType("income")
+            if(amount && amount<0) {
+                setAmount(amount*-1)
+            }
+        } else {
+            setType("expense")
+            if(amount && amount > 0) {
+                setAmount(amount*-1)
+            }
+        }
+    }
+
   return (
     <div className='mx-16 my-0 flex flex-col justify-center items-center'>
-    <p>Edit Expense</p>
+    <p>Edit Transaction</p>
+    <div>
+        <button className={type === "income" ? 'bg-green m-2 p-3 text-xl text-white':'bg-green m-2 p-2 text-l text-white'} onClick={()=>changeType("income")}>Income</button>
+        <button className={type === "expense" ? 'bg-green m-2 p-3 text-xl text-white':'bg-green m-2 p-2 text-l text-white'} onClick={()=>changeType("expense")}>Expense</button>
+    </div>
     <LocalizationProvider dateAdapter={AdapterMoment}>
         <DatePicker
             renderInput={(props) => <TextField {...props} />}
@@ -73,14 +96,14 @@ const EditExpense = () => {
                 <option value={'Gifts'}>Gifts</option>
         </select>
     </div>
-    <label>Notes: <input value={data.title} className='border border-black p-2 m-2' onChange={(e)=>setData({...data, title: e.target.value})} placeholder='Add Notes'/> </label>
+    <label>Notes: <input value={data.notes} className='border border-black p-2 m-2' onChange={(e)=>setData({...data, notes: e.target.value})} placeholder='Add Notes'/> </label>
     <div>
-            <button onClick={handleAdd} className='m-2 p-2 text-l bg-blue'>ADD</button>
-            <button onClick={handleClose} className='m-2 p-2 text-l bg-blue'>CLOSE</button>
+            <button onClick={handleAdd} className='m-2 p-2 text-l text-white bg-green'>ADD</button>
+            <button onClick={handleClose} className='m-2 p-2 text-l text-white bg-green'>CLOSE</button>
 
     </div>
   </div>
   )
 }
 
-export default EditExpense
+export default EditTransaction
