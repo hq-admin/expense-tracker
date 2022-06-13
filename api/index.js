@@ -13,19 +13,20 @@ const app = express()
 app.use(express.json());
 app.use(cors())
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+mongoose.connect(process.env.MONGO_URL)
+.then(()=> console.log("DB connection successfull"))
+.catch((err) => console.log(err))
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-  });
+
+// app.use(express.static(path.join(__dirname, '../client/build')));
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+//   });
 
   app.get('/', (req,res)=> {
     res.send("success")
 })
-
-mongoose.connect(process.env.MONGO_URL)
-.then(()=> console.log("DB connection successfull"))
-.catch((err) => console.log(err))
 
 app.use("/api/transactions", transactionRoute)
 app.use("/api/categories", categoryRoute)
